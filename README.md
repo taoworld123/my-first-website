@@ -5,17 +5,17 @@
 ---
 ### My Accounts & Links
 
--Email:a2453196402@outlook.com
+Email:a2453196402@outlook.com
 
--GitHub
+GitHub
 
--Kaggle
+Kaggle
 
--Paiza
+Paiza
 
--Leetcode
+Leetcode
 
--X
+X
 
 ---
 ### About Me
