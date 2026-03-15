@@ -55,28 +55,33 @@
     <a class="link" href="game.html">Game</a>
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
-    <div class="live2d-container"></div>
+   <!-- 修复：正确的Live2D容器（标签错误已修正） -->
+    <div class="live2d-container">
         <canvas id="live2d-canvas"></canvas>
     </div>
 
-    <!-- ✅ 正确引入你上传的 Cubism3 官方内核（根目录） -->
+    <!-- 引入Cubism3内核 -->
     <script src="./live2dcubismframework.js"></script>
 
     <script>
-        // 页面加载完成后初始化Live2D
-        window.addEventListener('load', function () {
-            try {
-                console.log("✅ Live2D框架加载成功");
+        // 等待页面+脚本完全加载完毕再执行（解决未定义报错）
+        window.onload = function() {
+            // 双重检查：框架是否真的加载成功
+            if (!window.Live2DCubismFramework) {
+                console.error("❌ Cubism3框架加载失败！");
+                alert("Live2D框架加载失败，请检查文件");
+                return;
+            }
 
-                // 1. 获取画布元素
+            try {
+                console.log("✅ Live2D框架加载成功！");
                 const canvas = document.getElementById('live2d-canvas');
-                // 2. 模型路径（✅ 完全匹配你的仓库结构）
                 const modelPath = './runtime/hiyori_pro_t11.model3.json';
 
-                // 3. 初始化Cubism3框架
+                // 初始化框架
                 Live2DCubismFramework.CubismWebFramework.initialize();
 
-                // 4. 创建模型查看器（官方最简稳定方式）
+                // 创建模型
                 const viewer = new Live2DCubismFramework.CubismViewer({
                     canvas: canvas,
                     modelPath: modelPath,
@@ -84,26 +89,21 @@
                     sceneMatrix: new Live2DCubismFramework.CubismMatrix44()
                 });
 
-                // 5. 加载模型并运行
-                viewer.loadAssets()
-                    .then(() => {
-                        viewer.start();
-                        console.log("🎉 桃濑日和模型加载成功！");
-                    })
-                    .catch((error) => {
-                        console.error("❌ 模型加载失败：", error);
-                        alert("模型加载失败，请打开控制台查看错误");
-                    });
+                // 加载并启动
+                viewer.loadAssets().then(() => {
+                    viewer.start();
+                    console.log("🎉 模型运行成功！");
+                }).catch(err => {
+                    console.error("模型加载失败：", err);
+                });
 
-            } catch (e) {
-                console.error("❌ 初始化失败：", e);
-                alert("Live2D初始化失败：" + e.message);
+            } catch (err) {
+                console.error("初始化错误：", err);
             }
-        });
+        };
     </script>
-
-    </body>
-    </html>
+</body>
+</html>
 
 
 
