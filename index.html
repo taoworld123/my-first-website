@@ -60,7 +60,7 @@
     <script src="./live2d/runtime/cubismcore.min.js"></script>
     <script src="./live2d/runtime/live2dcubismframework.min.js"></script>
     <script>
-    const modelUrl = "./live2d/hiyori_pro_t1.cmo3";
+    const modelUrl = "./live2d/hiyori_pro_t11.cmo3";
     const motionUrl = "./live2d/hiyori_pro_t04.can3";
     const app = document.querySelector('.live2d-container');
     const canvas = document.createElement('canvas');
@@ -69,19 +69,31 @@
     app.appendChild(canvas);
     canvas.width = 300;
     canvas.height = 300;
+    // 1. 初始化Live2D核心库
+    Live2DCubismCore.initialize();
     
-    const options = {
-        width: canvas.width,
-        height: canvas.height
-    };
-    Live2DFramework.loadModel({
-        model: modelUrl,
-        canvas: canvas,
-        motions: [motionUrl]
-    }, function (live2d) {
-        live2d.startMotion(0);
-    });
+    // 2. 创建模型实例并加载你的模型
+    const model = Live2DCubismFramework.CubismModel.create();
+    model.loadModel(modelUrl);
     
+    // 3. 创建动作实例并加载你的动作，让模型开始动
+    const motion = Live2DCubismFramework.CubismMotion.create();
+    motion.loadMotion(motionUrl);
+    model.startMotion(motion);
+    
+    // 4. 创建渲染器，把模型画到画布上
+    const renderer = Live2DCubismFramework.CubismRenderer.create(canvas);
+    renderer.initialize();
+    renderer.setModel(model);
+    
+    // 5. 加一个新的循环，让模型每帧更新+渲染（这是小人能显示、能动的关键）
+    function tick() {
+        model.update();      // 更新模型状态（眨眼、动作等）
+        renderer.render();   // 把模型画到网页上
+        requestAnimationFrame(tick);
+    }
+    tick();
+
     function loop() {
         requestAnimationFrame(loop);
     }
