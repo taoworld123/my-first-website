@@ -59,21 +59,41 @@
     <!-- 加载 Live2D-->
    
     <script>
-    // 1. 先创建 Live2DCubismCore 空对象
-    window.Live2DCubismCore = window.Live2DCubismCore || {};
-    // 2. 补全框架需要的所有 Logging 方法（空实现，不影响功能）
+    // 1. 完整 mock Live2DCubismCore（覆盖框架初始化需要的所有核心方法）
+    window.Live2DCubismCore = window.Live2DCubismCore || {
+      // 版本查询（解决当前 csmGetVersion 报错）
+      csmGetVersion: function() { return "5.0.0"; },
+      
+      // 模型生命周期（框架后续会调用）
+      csmCreateModel: function() { return {}; },
+      csmDeleteModel: function(model) {},
+      csmUpdateModel: function(model, deltaTime) {},
+      
+      // 动作相关
+      csmCreateMotion: function() { return {}; },
+      csmDeleteMotion: function(motion) {},
+      csmStartMotion: function(model, motion, priority) {},
+      csmStopMotion: function(model, motion) {},
+      
+      // 渲染相关
+      csmCreateRenderer: function() { return {}; },
+      csmDeleteRenderer: function(renderer) {},
+      csmRenderModel: function(renderer, model, canvas) {},
+      
+      // 其他工具方法（兜底）
+      csmGetLogLevel: function() { return 0; },
+      csmSetLogLevel: function(level) {}
+    };
+    
+    // 2. 完整 mock Logging（覆盖所有框架会调用的日志方法）
     window.Live2DCubismCore.Logging = {
-      // 基础日志方法
       log: function() {},
       warning: function() {},
       error: function() {},
-      // 框架内部专用日志方法
       createLogFunction: function() { return function() {}; },
       csmSetLogFunction: function() {},
       setLogLevel: function() {},
-      getLogLevel: function() { return 0; }, // 返回任意数字即可
-      // 兜底：如果还有其他方法，框架调用时不会再报错
-      __proto__: {}
+      getLogLevel: function() { return 0; }
     };
     </script>
 
