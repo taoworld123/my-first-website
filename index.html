@@ -61,13 +61,18 @@
     <script>
     // 1. 先创建 Live2DCubismCore 空对象（防止 undefined）
     window.Live2DCubismCore = window.Live2DCubismCore || {};
-    // 2. 补全框架必须的 Logging 接口（空实现，不影响功能）
+    // 2. 补全框架必须的 Logging 接口（包含所有需要的方法）
     window.Live2DCubismCore.Logging = {
       log: function() {},
       warning: function() {},
-      error: function() {}
+      error: function() {},
+      //  新增框架需要的 createLogFunction 方法（空实现即可）
+      createLogFunction: function() {
+        return function() {};
+      }
     };
     </script>
+
     <script src="./live2d/index-C3Nm6OPZ.js"></script>   
     <script>
     document.addEventListener('DOMContentLoaded', async () => {
