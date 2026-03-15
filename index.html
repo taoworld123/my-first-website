@@ -59,6 +59,10 @@
     <!-- 加载 Live2D-->
     <script src="./live2d/index-C3Nm6OPZ.js"></script>
     <script>
+    window.Live2DCubismCore = window.Live2DCubism;
+    </script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', async () => {
     // 等待核心库挂载到全局（解决"找不到变量"问题）
     while (!window.Live2DCubism || !window.Live2DCubismFramework) {
