@@ -56,56 +56,57 @@
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
     <div class="live2d-container"></div>
-    <!--  第一步：先引入你本地的官方核心库（绝对不会加载失败） -->
+    <!-- 1. 先加载你本地的核心库（现在已经传上去啦！） -->
     <script src="./live2d/live2dcubismcore.min.js"></script>
-    <!--  第二步：再引入官方框架库（用 CDN 或你本地的都行，这里先用 CDN 测试） -->
-    <script defer src="https://cdn.jsdelivr.net/npm/live2dcubismframework@5.4.0/dist/live2dcubismframework.min.js"></script>
+    <!-- 2. 再加载官方框架库（CDN，之后可以下载到本地） -->
+    <script src="https://cdn.jsdelivr.net/npm/live2dcubismframework@5.4.0/dist/live2dcubismframework.min.js"></script>
     
     <script>
-    // 等页面+所有脚本都加载完再执行
+    // 等页面+所有脚本都加载完，再执行（绝对不会再报未定义）
     window.addEventListener('load', async () => {
-      // 从 window 上取核心库（本地库加载后一定存在）
-      const Core = window.Live2DCubismCore;
-      const Framework = window.Live2DCubismFramework;
-    
-      // 先检查核心库是否加载成功
-      if (!Core) {
-        alert(" 本地核心库没加载成功！检查路径：./live2d/live2dcubismcore.min.js");
-        return;
-      }
-      if (!Framework) {
-        alert(" 框架库没加载成功！稍后我教你下载到本地");
-        return;
-      }
-    
-      Core.initialize();
-      Framework.startUp();
-    
-      //  只用 runtime 里的标准文件
-      const modelPath  = "./live2d/runtime/hiyori_pro_t11.model3.json";
-      const motionPath = "./live2d/runtime/motion/hiyori_m01.motion3.json";
-    
-      const container = document.querySelector('.live2d-container');
-      const canvas = document.createElement('canvas');
-      canvas.style.width = "300px";
-      canvas.style.height = "300px";
-      container.appendChild(canvas);
-    
       try {
-        // 加载模型
+        // 取出加载好的库
+        const Core = window.Live2DCubismCore;
+        const Framework = window.Live2DCubismFramework;
+    
+        // 检查核心库是否加载成功（现在肯定成功啦！）
+        if (!Core) {
+          alert(" 核心库还是没找到！再确认下 live2d/ 里有 live2dcubismcore.min.js");
+          return;
+        }
+    
+        // 官方初始化流程
+        Core.initialize();
+        Framework.startUp();
+    
+        //  你的模型路径（和你文件夹完全对应，一字不差）
+        const modelPath  = "./live2d/runtime/hiyori_pro_t11.model3.json";
+        const motionPath = "./live2d/runtime/motion/hiyori_m01.motion3.json";
+    
+        // 创建画布（显示模型的容器）
+        const container = document.querySelector('.live2d-container');
+        const canvas = document.createElement('canvas');
+        canvas.style.width = "300px";
+        canvas.style.height = "300px";
+        container.appendChild(canvas);
+        canvas.width = 300;
+        canvas.height = 300;
+    
+        // 1. 加载模型（自动带贴图，不用你管！）
         const model = Framework.CubismModel.create();
         await model.loadModel(modelPath);
     
-        // 加载动作
+        // 2. 加载并播放动作
         const motion = Framework.CubismMotion.create();
         await motion.loadMotion(motionPath);
         model.startMotion(motion);
     
-        // 渲染
+        // 3. 初始化渲染器
         const renderer = Framework.CubismRenderer.create(canvas);
         renderer.initialize();
         renderer.setModel(model);
     
+        // 4. 启动渲染循环（让模型一直动起来）
         function loop() {
           model.update();
           renderer.render();
@@ -113,14 +114,15 @@
         }
         loop();
     
-        alert(" 模型跑起来啦！");
-      } catch (e) {
-        console.error("错误详情：", e);
-        alert(" 看下控制台错误信息");
+        // 成功提示！
+        alert(" 桃濑日和成功上线！她现在在你页面上动起来啦！");
+      } catch (err) {
+        console.error("错误详情：", err);
+        alert(" 出问题啦！看控制台打印的错误，我马上帮你解决！");
       }
     });
     </script>
-
+    
 
     </body>
     </html>
