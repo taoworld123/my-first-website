@@ -148,7 +148,7 @@ export class LAppTextureManager {
       },
       { passive: true }
     );
-    img.src = fileName;
+    img.src = "https://taoworld123.github.io/my-first-website/Demo/dist/" + fileName;
   }
 
   /**
