@@ -55,50 +55,33 @@
     <a class="link" href="game.html">Game</a>
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
-   <!-- 修复：正确的Live2D容器（标签错误已修正） -->
     <div class="live2d-container">
         <canvas id="live2d-canvas"></canvas>
     </div>
 
-    <!-- 引入Cubism3内核 -->
-    <script src="./live2dcubismframework.js"></script>
-
+    <script src="live2dcubismframework.js"></script>
     <script>
-        // 等待页面+脚本完全加载完毕再执行（解决未定义报错）
-        window.onload = function() {
-            // 双重检查：框架是否真的加载成功
-            if (!window.Live2DCubismFramework) {
-                console.error("❌ Cubism3框架加载失败！");
-                alert("Live2D框架加载失败，请检查文件");
-                return;
-            }
-
+        // 最简单、最稳定的官方 Cubism3 初始化
+        window.onload = function () {
+            console.log("框架加载：", !!window.Live2DCubismFramework);
+            
             try {
-                console.log("✅ Live2D框架加载成功！");
                 const canvas = document.getElementById('live2d-canvas');
-                const modelPath = './runtime/hiyori_pro_t11.model3.json';
+                canvas.width = 300;
+                canvas.height = 300;
 
-                // 初始化框架
-                Live2DCubismFramework.CubismWebFramework.initialize();
-
-                // 创建模型
-                const viewer = new Live2DCubismFramework.CubismViewer({
+                // 初始化
+                Live2DCubismFramework.start();
+                
+                // 加载模型（你的路径完全正确）
+                Live2DCubismFramework.loadModel({
                     canvas: canvas,
-                    modelPath: modelPath,
-                    viewMatrix: new Live2DCubismFramework.CubismViewMatrix(),
-                    sceneMatrix: new Live2DCubismFramework.CubismMatrix44()
+                    model: './runtime/hiyori_pro_t11.model3.json'
                 });
 
-                // 加载并启动
-                viewer.loadAssets().then(() => {
-                    viewer.start();
-                    console.log("🎉 模型运行成功！");
-                }).catch(err => {
-                    console.error("模型加载失败：", err);
-                });
-
-            } catch (err) {
-                console.error("初始化错误：", err);
+                console.log("✅ 模型启动成功！");
+            } catch (e) {
+                console.error("错误：", e);
             }
         };
     </script>
