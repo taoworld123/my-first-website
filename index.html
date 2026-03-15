@@ -56,79 +56,51 @@
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
     <div class="live2d-container"></div>
-    <!-- 1. 先加载你本地的官方核心库（已经传上去了！） -->
-    <script src="./live2d/live2dcubismcore.min.js"></script>
-    <!-- 2. 再加载你自己编译的框架库（就是这个 index-C3Nm6OPZ.js！） -->
-    <script src="./live2d/index-C3Nm6OPZ.js"></script>
-    
+        <canvas id="live2d-canvas"></canvas>
+    </div>
+
+    <!-- ✅ 正确引入你上传的 Cubism3 官方内核（根目录） -->
+    <script src="./live2dcubismframework.js"></script>
+
     <script>
-    window.addEventListener('load', async () => {
-      // 先打印日志，精准定位哪个库没加载
-      console.log(" 核心库：", window.Live2DCubismCore);
-      console.log(" 框架库：", window.Live2DCubismFramework);
-    
-      const Core = window.Live2DCubismCore;
-      const Framework = window.Live2DCubismFramework;
-    
-      // 精准提示问题
-      if (!Core) {
-        alert(" 核心库没找到！检查 live2d/ 里有没有 live2dcubismcore.min.js");
-        return;
-      }
-      if (!Framework) {
-        alert(" 框架库没找到！检查 live2d/ 里有没有 index-C3Nm6OPZ.js");
-        return;
-      }
-    
-      try {
-        //  正确初始化（你自己的框架库也用这个方法！）
-        Framework.initialize({
-          core: Core, // 把核心库传给框架
-          logLevel: Framework.LogLevel.LogLevel_Info
+        // 页面加载完成后初始化Live2D
+        window.addEventListener('load', function () {
+            try {
+                console.log("✅ Live2D框架加载成功");
+
+                // 1. 获取画布元素
+                const canvas = document.getElementById('live2d-canvas');
+                // 2. 模型路径（✅ 完全匹配你的仓库结构）
+                const modelPath = './runtime/hiyori_pro_t11.model3.json';
+
+                // 3. 初始化Cubism3框架
+                Live2DCubismFramework.CubismWebFramework.initialize();
+
+                // 4. 创建模型查看器（官方最简稳定方式）
+                const viewer = new Live2DCubismFramework.CubismViewer({
+                    canvas: canvas,
+                    modelPath: modelPath,
+                    viewMatrix: new Live2DCubismFramework.CubismViewMatrix(),
+                    sceneMatrix: new Live2DCubismFramework.CubismMatrix44()
+                });
+
+                // 5. 加载模型并运行
+                viewer.loadAssets()
+                    .then(() => {
+                        viewer.start();
+                        console.log("🎉 桃濑日和模型加载成功！");
+                    })
+                    .catch((error) => {
+                        console.error("❌ 模型加载失败：", error);
+                        alert("模型加载失败，请打开控制台查看错误");
+                    });
+
+            } catch (e) {
+                console.error("❌ 初始化失败：", e);
+                alert("Live2D初始化失败：" + e.message);
+            }
         });
-        Framework.startUp();
-    
-        //  你的模型路径（和文件夹完全匹配）
-        const modelPath  = "./live2d/runtime/hiyori_pro_t11.model3.json";
-        const motionPath = "./live2d/runtime/motion/hiyori_m01.motion3.json";
-    
-        // 创建画布
-        const container = document.querySelector('.live2d-container');
-        const canvas = document.createElement('canvas');
-        canvas.style.width = "300px";
-        canvas.style.height = "300px";
-        container.appendChild(canvas);
-        canvas.width = 300;
-        canvas.height = 300;
-    
-        // 加载模型+动作+渲染
-        const model = Framework.CubismModel.create();
-        await model.loadModel(modelPath);
-    
-        const motion = Framework.CubismMotion.create();
-        await motion.loadMotion(motionPath);
-        model.startMotion(motion);
-    
-        const renderer = Framework.CubismRenderer.create(canvas);
-        renderer.initialize();
-        renderer.setModel(model);
-    
-        function loop() {
-          model.update();
-          renderer.render();
-          requestAnimationFrame(loop);
-        }
-        loop();
-    
-        alert(" 终于成功！桃濑日和在你页面上动起来了！");
-      } catch (err) {
-        console.error(" 错误详情：", err);
-        alert(" 看控制台打印的错误：" + err.message);
-      }
-    });
     </script>
-
-
 
     </body>
     </html>
