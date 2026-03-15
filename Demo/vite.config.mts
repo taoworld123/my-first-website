@@ -7,7 +7,7 @@ export default defineConfig((env: ConfigEnv): UserConfig => {
       port: 5000,
     },
     root: './',
-    base: '/',
+    base: '/my-first-website/Demo/dist/',
     publicDir: './public',
     resolve: {
       extensions: ['.ts', '.js'],
