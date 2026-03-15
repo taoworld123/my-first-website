@@ -59,13 +59,40 @@
         <canvas id="live2d-canvas"></canvas>
     </div>
 
-    <!-- 🔥 绝对路径加载（GitHub Pages 专用，永不失效） -->
-    <script src="https://taoworld123.github.io/my-first-website/live2dcubismframework.js"></script>
+    <!-- 加载你本地的正版框架 -->
+    <script src="./live2dcubismframework.js"></script>
 
     <script>
-        window.onload = function() {
-            console.log("框架对象：", Live2DCubismFramework);
-            alert("框架加载成功！");
+        // 页面加载完成后执行
+        window.onload = async function () {
+            try {
+                console.log("✅ 框架加载成功！", LIVE2DCUBISMFRAMEWORK);
+                
+                // 1. 获取画布
+                const canvas = document.getElementById('live2d-canvas');
+                canvas.width = 350;
+                canvas.height = 350;
+
+                // 2. 模型路径（完全匹配你的仓库）
+                const modelJson = './runtime/hiyori_pro_t11.model3.json';
+
+                // 3. 极简初始化（适配你的框架）
+                const model = await LIVE2DCUBISMFRAMEWORK.Model.load(modelJson);
+                const renderer = new LIVE2DCUBISMFRAMEWORK.Renderer(canvas);
+                renderer.setModel(model);
+
+                // 4. 主循环（渲染+更新）
+                function tick() {
+                    model.update();
+                    renderer.render();
+                    requestAnimationFrame(tick);
+                }
+                tick();
+
+                console.log("🎉 桃濑日和模型运行成功！");
+            } catch (err) {
+                console.error("❌ 错误：", err);
+            }
         };
     </script>
 </body>
