@@ -57,11 +57,17 @@
     <a class="link" href="anime.html">Anime</a>
     <div class="live2d-container"></div>
     <!-- 加载 Live2D-->
-    <script src="./live2d/index-C3Nm6OPZ.js"></script>
+   
     <script>
-    window.Live2DCubismCore = window.Live2DCubism;
+    window.Live2DCubismCore = window.Live2DCubism || {};
+    // 补全框架需要的日志接口
+    window.Live2DCubismCore.Logging = {
+      log: () => {},
+      warning: () => {},
+      error: () => {}
+    };
     </script>
-
+    <script src="./live2d/index-C3Nm6OPZ.js"></script>   
     <script>
     document.addEventListener('DOMContentLoaded', async () => {
     // 等待核心库挂载到全局（解决"找不到变量"问题）
@@ -71,11 +77,6 @@
 
     const Live2DCubism = window.Live2DCubism;
     const Live2DCubismFramework = window.Live2DCubismFramework;
-
-    // 初始化核心库（官方标准步骤）
-    Live2DCubism.initialize();
-    Live2DCubismFramework.startUp();
-
     //  你的画布代码完全保留原样
     const modelUrl = "./live2d/hiyori_pro_t11.cmo3";
     const motionUrl = "./live2d/hiyori_pro_t04.can3";
