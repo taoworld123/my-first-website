@@ -5,6 +5,12 @@
     <meta charset="utf-8" />
     <title>My First Github Website</title>
     <style>
+        .live2d-container {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 999;
+        }
         body {
             text-align: center;
             font-family: Arial,sans-serif;
@@ -49,6 +55,21 @@
     <a class="link" href="game.html">Game</a>
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
+    <div class="live2d-container"></div>
+    <!-- 加载 Live2D-->
+    <script src="./live2d/runtime/cubismcore.min.js"></script>
+    <script src="./live2d/runtime/live2dcubismframework.min.js"></script>
+    <script>
+    const modelUrl = "./live2d/hiyori_pro_t1.cmo3";
+    const motionUrl = "./live2d/hiyori_pro_t04.can3";
+    const app = document.querySelector('.live2d-container');
+    const canvas = document.createElement('canvas');
+    canvas.style.width = '300px';
+    canvas.style.height = '300px';
+    app.appendChild(canvas);
+    </script>
+
+
 </body>
 
 </html>
