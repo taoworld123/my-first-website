@@ -67,6 +67,25 @@
     canvas.style.width = '300px';
     canvas.style.height = '300px';
     app.appendChild(canvas);
+    canvas.width = 300;
+    canvas.height = 300;
+    
+    const options = {
+        width: canvas.width,
+        height: canvas.height
+    };
+    Live2DFramework.loadModel({
+        model: modelUrl,
+        canvas: canvas,
+        motions: [motionUrl]
+    }, function (live2d) {
+        live2d.startMotion(0);
+    });
+    
+    function loop() {
+        requestAnimationFrame(loop);
+    }
+    loop();
     </script>
 
 
