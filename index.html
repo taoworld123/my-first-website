@@ -55,43 +55,29 @@
     <a class="link" href="game.html">Game</a>
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
+    <!-- 画布 -->
     <div class="live2d-container">
         <canvas id="live2d-canvas"></canvas>
     </div>
 
-    <!-- 加载你本地的正版框架 -->
+    <!-- 你的正版框架 -->
     <script src="./live2dcubismframework.js"></script>
 
     <script>
-        // 页面加载完成后执行
-        window.onload = async function () {
+        window.onload = function () {
+            // ✅ 框架已加载成功！
+            console.log("✅ 框架加载完成", LIVE2DCUBISMFRAMEWORK);
+            
             try {
-                console.log("✅ 框架加载成功！", LIVE2DCUBISMFRAMEWORK);
-                
-                // 1. 获取画布
                 const canvas = document.getElementById('live2d-canvas');
-                canvas.width = 350;
-                canvas.height = 350;
-
-                // 2. 模型路径（完全匹配你的仓库）
-                const modelJson = './runtime/hiyori_pro_t11.model3.json';
-
-                // 3. 极简初始化（适配你的框架）
-                const model = await LIVE2DCUBISMFRAMEWORK.Model.load(modelJson);
-                const renderer = new LIVE2DCUBISMFRAMEWORK.Renderer(canvas);
-                renderer.setModel(model);
-
-                // 4. 主循环（渲染+更新）
-                function tick() {
-                    model.update();
-                    renderer.render();
-                    requestAnimationFrame(tick);
-                }
-                tick();
-
-                console.log("🎉 桃濑日和模型运行成功！");
-            } catch (err) {
-                console.error("❌ 错误：", err);
+                // 极简启动：适配你的框架 + 模型路径
+                LIVE2DCUBISMFRAMEWORK.start({
+                    canvas: canvas,
+                    model: "./runtime/hiyori_pro_t11.model3.json"
+                });
+                console.log("🎉 模型启动成功！");
+            } catch (e) {
+                console.error("最终错误：", e);
             }
         };
     </script>
