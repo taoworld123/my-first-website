@@ -59,30 +59,13 @@
         <canvas id="live2d-canvas"></canvas>
     </div>
 
-    <script src="live2dcubismframework.js"></script>
+    <!-- 🔥 绝对路径加载（GitHub Pages 专用，永不失效） -->
+    <script src="https://taoworld123.github.io/my-first-website/live2dcubismframework.js"></script>
+
     <script>
-        // 最简单、最稳定的官方 Cubism3 初始化
-        window.onload = function () {
-            console.log("框架加载：", !!window.Live2DCubismFramework);
-            
-            try {
-                const canvas = document.getElementById('live2d-canvas');
-                canvas.width = 300;
-                canvas.height = 300;
-
-                // 初始化
-                Live2DCubismFramework.start();
-                
-                // 加载模型（你的路径完全正确）
-                Live2DCubismFramework.loadModel({
-                    canvas: canvas,
-                    model: './runtime/hiyori_pro_t11.model3.json'
-                });
-
-                console.log("✅ 模型启动成功！");
-            } catch (e) {
-                console.error("错误：", e);
-            }
+        window.onload = function() {
+            console.log("框架对象：", Live2DCubismFramework);
+            alert("框架加载成功！");
         };
     </script>
 </body>
