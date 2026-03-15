@@ -59,17 +59,21 @@
     <!-- 加载 Live2D-->
    
     <script>
-    // 1. 先创建 Live2DCubismCore 空对象（防止 undefined）
+    // 1. 先创建 Live2DCubismCore 空对象
     window.Live2DCubismCore = window.Live2DCubismCore || {};
-    // 2. 补全框架必须的 Logging 接口（包含所有需要的方法）
+    // 2. 补全框架需要的所有 Logging 方法（空实现，不影响功能）
     window.Live2DCubismCore.Logging = {
+      // 基础日志方法
       log: function() {},
       warning: function() {},
       error: function() {},
-      //  新增框架需要的 createLogFunction 方法（空实现即可）
-      createLogFunction: function() {
-        return function() {};
-      }
+      // 框架内部专用日志方法
+      createLogFunction: function() { return function() {}; },
+      csmSetLogFunction: function() {},
+      setLogLevel: function() {},
+      getLogLevel: function() { return 0; }, // 返回任意数字即可
+      // 兜底：如果还有其他方法，框架调用时不会再报错
+      __proto__: {}
     };
     </script>
 
