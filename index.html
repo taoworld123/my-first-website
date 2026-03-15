@@ -5,12 +5,6 @@
     <meta charset="utf-8" />
     <title>My First Github Website</title>
     <style>
-        .live2d-container {
-            position: fixed;
-            left: 20px;
-            bottom: 20px;
-            z-index: 999;
-        }
         body {
             text-align: center;
             font-family: Arial,sans-serif;
@@ -55,32 +49,8 @@
     <a class="link" href="game.html">Game</a>
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
-    <!-- 画布 -->
-    <div class="live2d-container">
-        <canvas id="live2d-canvas"></canvas>
-    </div>
+    <iframe src="/dist/index.html" style="position:fixed; right:0; bottom:0; width:400px; height:600px; border:none; background:transparent; z-index:999;"></iframe>
 
-    <!-- 你的正版框架 -->
-    <script src="./live2dcubismframework.js"></script>
-
-    <script>
-        window.onload = function () {
-            // ✅ 框架已加载成功！
-            console.log("✅ 框架加载完成", LIVE2DCUBISMFRAMEWORK);
-            
-            try {
-                const canvas = document.getElementById('live2d-canvas');
-                // 极简启动：适配你的框架 + 模型路径
-                LIVE2DCUBISMFRAMEWORK.start({
-                    canvas: canvas,
-                    model: "./runtime/hiyori_pro_t11.model3.json"
-                });
-                console.log("🎉 模型启动成功！");
-            } catch (e) {
-                console.error("最终错误：", e);
-            }
-        };
-    </script>
 </body>
 </html>
 
