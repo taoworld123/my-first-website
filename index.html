@@ -56,19 +56,32 @@
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
     <div class="live2d-container"></div>
-    <!-- 加载官方 Live2D 核心 + 框架（先测试用） -->
-    <script src="https://cdn.jsdelivr.net/npm/live2dcubismcore@5.4.0/dist/live2dcubismcore.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/live2dcubismframework@5.4.0/dist/live2dcubismframework.min.js"></script>
+    <!--  第一步：先引入你本地的官方核心库（绝对不会加载失败） -->
+    <script src="./live2d/live2dcubismcore.min.js"></script>
+    <!--  第二步：再引入官方框架库（用 CDN 或你本地的都行，这里先用 CDN 测试） -->
+    <script defer src="https://cdn.jsdelivr.net/npm/live2dcubismframework@5.4.0/dist/live2dcubismframework.min.js"></script>
     
     <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const Core = Live2DCubismCore;
-      const Framework = Live2DCubismFramework;
+    // 等页面+所有脚本都加载完再执行
+    window.addEventListener('load', async () => {
+      // 从 window 上取核心库（本地库加载后一定存在）
+      const Core = window.Live2DCubismCore;
+      const Framework = window.Live2DCubismFramework;
+    
+      // 先检查核心库是否加载成功
+      if (!Core) {
+        alert(" 本地核心库没加载成功！检查路径：./live2d/live2dcubismcore.min.js");
+        return;
+      }
+      if (!Framework) {
+        alert(" 框架库没加载成功！稍后我教你下载到本地");
+        return;
+      }
     
       Core.initialize();
       Framework.startUp();
     
-      //  只使用 runtime 里的标准文件
+      //  只用 runtime 里的标准文件
       const modelPath  = "./live2d/runtime/hiyori_pro_t11.model3.json";
       const motionPath = "./live2d/runtime/motion/hiyori_m01.motion3.json";
     
@@ -79,7 +92,7 @@
       container.appendChild(canvas);
     
       try {
-        // 加载模型（自动带贴图，不用你管）
+        // 加载模型
         const model = Framework.CubismModel.create();
         await model.loadModel(modelPath);
     
@@ -102,11 +115,12 @@
     
         alert(" 模型跑起来啦！");
       } catch (e) {
-        console.error("错误：", e);
-        alert(" 看下控制台错误");
+        console.error("错误详情：", e);
+        alert(" 看下控制台错误信息");
       }
     });
     </script>
+
 
     </body>
     </html>
