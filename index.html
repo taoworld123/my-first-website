@@ -56,91 +56,58 @@
     <a class="link" href="book.html">Book</a>
     <a class="link" href="anime.html">Anime</a>
     <div class="live2d-container"></div>
-    <!-- 加载 Live2D-->
-   
-    <script>
-    // 1. 完整 mock Live2DCubismCore（覆盖框架初始化需要的所有核心方法）
-    window.Live2DCubismCore = window.Live2DCubismCore || {
-      // 版本查询（解决当前 csmGetVersion 报错）
-      csmGetVersion: function() { return "5.0.0"; },
-      
-      // 模型生命周期（框架后续会调用）
-      csmCreateModel: function() { return {}; },
-      csmDeleteModel: function(model) {},
-      csmUpdateModel: function(model, deltaTime) {},
-      
-      // 动作相关
-      csmCreateMotion: function() { return {}; },
-      csmDeleteMotion: function(motion) {},
-      csmStartMotion: function(model, motion, priority) {},
-      csmStopMotion: function(model, motion) {},
-      
-      // 渲染相关
-      csmCreateRenderer: function() { return {}; },
-      csmDeleteRenderer: function(renderer) {},
-      csmRenderModel: function(renderer, model, canvas) {},
-      
-      // 其他工具方法（兜底）
-      csmGetLogLevel: function() { return 0; },
-      csmSetLogLevel: function(level) {}
-    };
+  <!-- 加载官方 Live2D 核心 + 框架（先测试用） -->
+    <script src="https://cdn.jsdelivr.net/npm/live2dcubismcore@5.4.0/dist/live2dcubismcore.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/live2dcubismframework@5.4.0/dist/live2dcubismframework.min.js"></script>
     
-    // 2. 完整 mock Logging（覆盖所有框架会调用的日志方法）
-    window.Live2DCubismCore.Logging = {
-      log: function() {},
-      warning: function() {},
-      error: function() {},
-      createLogFunction: function() { return function() {}; },
-      csmSetLogFunction: function() {},
-      setLogLevel: function() {},
-      getLogLevel: function() { return 0; }
-    };
-    </script>
-
-    <script src="./live2d/index-C3Nm6OPZ.js"></script>   
     <script>
     document.addEventListener('DOMContentLoaded', async () => {
-    // 等待核心库挂载到全局（解决"找不到变量"问题）
-    while (!window.Live2DCubism || !window.Live2DCubismFramework) {
-        await new Promise(resolve => setTimeout(resolve, 10));
-    }
-
-    const Live2DCubism = window.Live2DCubism;
-    const Live2DCubismFramework = window.Live2DCubismFramework;
-    //  你的画布代码完全保留原样
-    const modelUrl = "./live2d/hiyori_pro_t11.cmo3";
-    const motionUrl = "./live2d/hiyori_pro_t04.can3";
-    const app = document.querySelector('.live2d-container');
-    const canvas = document.createElement('canvas');
-    canvas.style.width = '300px';
-    canvas.style.height = '300px';
-    app.appendChild(canvas);
-    canvas.width = 300;
-    canvas.height = 300;
-
-    // 加载模型（异步方式，避免白屏）
-    const model = Live2DCubismFramework.CubismModel.create();
-    await model.loadModel(modelUrl);
-
-    // 加载并播放动作
-    const motion = Live2DCubismFramework.CubismMotion.create();
-    await motion.loadMotion(motionUrl);
-    model.startMotion(motion);
-
-    // 初始化渲染器
-    const renderer = Live2DCubismFramework.CubismRenderer.create(canvas);
-    renderer.initialize();
-    renderer.setModel(model);
-
-    // 渲染循环（让模型持续动起来）
-    function tick() {
-        model.update();
-        renderer.render();
-        requestAnimationFrame(tick);
-    }
-    tick();
+      const Core = Live2DCubismCore;
+      const Framework = Live2DCubismFramework;
+    
+      Core.initialize();
+      Framework.startUp();
+    
+      //  只使用 runtime 里的标准文件
+      const modelPath  = "./live2d/runtime/hiyori_pro_t11.model3.json";
+      const motionPath = "./live2d/runtime/motion/hiyori_m01.motion3.json";
+    
+      const container = document.querySelector('.live2d-container');
+      const canvas = document.createElement('canvas');
+      canvas.style.width = "300px";
+      canvas.style.height = "300px";
+      container.appendChild(canvas);
+    
+      try {
+        // 加载模型（自动带贴图，不用你管）
+        const model = Framework.CubismModel.create();
+        await model.loadModel(modelPath);
+    
+        // 加载动作
+        const motion = Framework.CubismMotion.create();
+        await motion.loadMotion(motionPath);
+        model.startMotion(motion);
+    
+        // 渲染
+        const renderer = Framework.CubismRenderer.create(canvas);
+        renderer.initialize();
+        renderer.setModel(model);
+    
+        function loop() {
+          model.update();
+          renderer.render();
+          requestAnimationFrame(loop);
+        }
+        loop();
+    
+        alert(" 模型跑起来啦！");
+      } catch (e) {
+        console.error("错误：", e);
+        alert(" 看下控制台错误");
+      }
     });
     </script>
+
     </body>
     </html>
 
