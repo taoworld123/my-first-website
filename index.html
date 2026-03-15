@@ -65,11 +65,11 @@
         await new Promise(resolve => setTimeout(resolve, 10));
     }
 
-    const Live2DCubismCore = window.Live2DCubism;
+    const Live2DCubism = window.Live2DCubism;
     const Live2DCubismFramework = window.Live2DCubismFramework;
 
     // 初始化核心库（官方标准步骤）
-    Live2DCubismCore.initialize();
+    Live2DCubism.initialize();
     Live2DCubismFramework.startUp();
 
     //  你的画布代码完全保留原样
@@ -106,12 +106,8 @@
     tick();
     });
     </script>
-
-
-
     </body>
-
-     </html>
+    </html>
 
 
 
