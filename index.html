@@ -59,6 +59,20 @@
     <!-- 加载 Live2D-->
     <script src="./live2d/index-C3Nm6OPZ.js"></script>
     <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    // 等待核心库挂载到全局（解决"找不到变量"问题）
+    while (!window.Live2DCubism || !window.Live2DCubismFramework) {
+        await new Promise(resolve => setTimeout(resolve, 10));
+    }
+
+    const Live2DCubismCore = window.Live2DCubism;
+    const Live2DCubismFramework = window.Live2DCubismFramework;
+
+    // 初始化核心库（官方标准步骤）
+    Live2DCubismCore.initialize();
+    Live2DCubismFramework.startUp();
+
+    //  你的画布代码完全保留原样
     const modelUrl = "./live2d/hiyori_pro_t11.cmo3";
     const motionUrl = "./live2d/hiyori_pro_t04.can3";
     const app = document.querySelector('.live2d-container');
@@ -68,41 +82,36 @@
     app.appendChild(canvas);
     canvas.width = 300;
     canvas.height = 300;
-    // 1. 初始化Live2D核心库
-    Live2DCubismCore.initialize();
-    
-    // 2. 创建模型实例并加载你的模型
+
+    // 加载模型（异步方式，避免白屏）
     const model = Live2DCubismFramework.CubismModel.create();
-    model.loadModel(modelUrl);
-    
-    // 3. 创建动作实例并加载你的动作，让模型开始动
+    await model.loadModel(modelUrl);
+
+    // 加载并播放动作
     const motion = Live2DCubismFramework.CubismMotion.create();
-    motion.loadMotion(motionUrl);
+    await motion.loadMotion(motionUrl);
     model.startMotion(motion);
-    
-    // 4. 创建渲染器，把模型画到画布上
+
+    // 初始化渲染器
     const renderer = Live2DCubismFramework.CubismRenderer.create(canvas);
     renderer.initialize();
     renderer.setModel(model);
-    
-    // 5. 加一个新的循环，让模型每帧更新+渲染（这是小人能显示、能动的关键）
+
+    // 渲染循环（让模型持续动起来）
     function tick() {
-        model.update();      // 更新模型状态（眨眼、动作等）
-        renderer.render();   // 把模型画到网页上
+        model.update();
+        renderer.render();
         requestAnimationFrame(tick);
     }
     tick();
-
-    function loop() {
-        requestAnimationFrame(loop);
-    }
-    loop();
+    });
     </script>
 
 
-</body>
 
-</html>
+    </body>
+
+     </html>
 
 
 
