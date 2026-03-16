@@ -7,7 +7,7 @@ export default defineConfig((env: ConfigEnv): UserConfig => {
       port: 5000,
     },
     root: './',
-    base: '/my-first-website/Demo/',
+    base: '/',
     publicDir: './public',
     resolve: {
       extensions: ['.ts', '.js'],
@@ -16,7 +16,7 @@ export default defineConfig((env: ConfigEnv): UserConfig => {
       }
     },
     build: {
-      target: 'modules',
+      target: 'es2020',
       assetsDir: 'assets',
       outDir: './dist',
       sourcemap: env.mode == 'development' ? true : false,
