@@ -22,7 +22,7 @@ X
 
 I am new to GitHub and currently busy with other things.
 
-I will gradually improve this pagein my spare time.
+I will gradually improve this page in my spare time.
 
 ---
 ### Projects
