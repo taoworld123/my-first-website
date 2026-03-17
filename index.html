@@ -26,6 +26,7 @@
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
+        }
         .avatar {
             width:  9.375rem;
             height: 9.375rem;
@@ -91,14 +92,6 @@
    </div>
   <iframe 
         src="https://47.239.23.53:5000/" 
-        style="position: fixed; 
-        left: 20px; 
-        bottom: 20px; 
-        width: 320px; 
-        height: 360px; 
-        border: none; 
-        background: transparent; 
-        overflow: hidden;"
         frameborder="0"
         scrolling="no"
         allowtransparency="true">
@@ -113,6 +106,7 @@
         const color1 = getRandomGreen();
         const color2 = getRandomGreen();
         document.body.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+        document.body.style.backgroundAttachment = "fixed";
     </script>
 </body>
 </html>
