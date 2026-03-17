@@ -17,6 +17,7 @@
         body {
             min-height: 100vh;
             background-attachment: fixed;
+            background: linear-gradient(135deg, rgba(232,245,233,0.4), rgba(200,230,201,0.4));
             font-family: Arial,sans-serif;
             margin: 0;
             padding: 1.25rem;
@@ -25,6 +26,7 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
+            background: rgba(255,255,255,0.6);
             text-align: center;
         }
         .avatar {
@@ -96,17 +98,24 @@
         allowtransparency="true">
   </iframe>
   <script>
-        function getRandomGreen() {
-        const r = Math.floor(Math.random() * 20) + 200;
-        const g = Math.floor(Math.random() * 40) + 200;
-        const b = Math.floor(Math.random() * 30) + 200;
-        return `rgba(${r}, ${g}, ${b}, 0.4)`;
+        // 🔥 确保页面加载完再执行背景，避免样式覆盖
+        window.onload = function() {
+            function getRandomGreen() {
+                // 严格限定在你喜欢的绿色范围
+                const r = Math.floor(Math.random() * 20) + 220;
+                const g = Math.floor(Math.random() * 40) + 200;
+                const b = Math.floor(Math.random() * 30) + 200;
+                return `rgba(${r}, ${g}, ${b}, 0.4)`; // 0.4透明度
+            }
+            const color1 = getRandomGreen();
+            const color2 = getRandomGreen();
+            // 直接赋值给body，优先级最高
+            document.body.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+            document.body.style.backgroundAttachment = "fixed";
+            // 清除默认背景，确保随机色生效
+            document.body.style.backgroundImage = `linear-gradient(135deg, ${color1}, ${color2})`;
         }
-        const color1 = getRandomGreen();
-        const color2 = getRandomGreen();
-        document.body.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
-        document.body.style.backgroundAttachment = "fixed";
-    </script>
+  </script>
 </body>
 </html>
 
