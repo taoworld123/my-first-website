@@ -95,21 +95,32 @@
         <a class="link" href="game.html">Game</a>
         <a class="link" href="book.html">Book</a>
         <a class="link" href="anime.html">Anime</a>
-    </div>
+   </div>
   <iframe 
-    src="https://47.239.23.53:5000/" 
-    style="position: fixed; 
-           left: 20px; 
-           bottom: 20px; 
-           width: 320px; 
-           height: 360px; 
-           border: none; 
-           background: transparent; 
-           overflow: hidden;"
-    frameborder="0"
-    scrolling="no"
-    allowtransparency="true">
+        src="https://47.239.23.53:5000/" 
+        style="position: fixed; 
+        left: 20px; 
+        bottom: 20px; 
+        width: 320px; 
+        height: 360px; 
+        border: none; 
+        background: transparent; 
+        overflow: hidden;"
+        frameborder="0"
+        scrolling="no"
+        allowtransparency="true">
   </iframe>
+  <script>
+        function getRandomGreen() {
+        const r = Math.floor(Math.random() * 20) + 200;
+        const g = Math.floor(Math.random() * 40) + 200;
+        const b = Math.floor(Math.random() * 30) + 200;
+        return `rgba(${r}, ${g}, ${b}, 0.2)`;
+        }
+        const color1 = getRandomGreen();
+        const color2 = getRandomGreen();
+        document.body.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+    </script>
 </body>
 </html>
 
